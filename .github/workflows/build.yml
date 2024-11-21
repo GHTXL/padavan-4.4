@@ -10,6 +10,7 @@ on:
         type: choice
         description: 'Please select the model to compile'
         options:
+        - 'B50'
         - 'B70'
         - 'BELL-A040WQ'
         - 'CR660x'
