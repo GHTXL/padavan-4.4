@@ -50,7 +50,7 @@ on:
         - 'XY-C1'
         - 'ZTE-E8820S'
         - 'WE410443-TC'
-        default: 'K2P'
+        default: 'B50'
       release:
         type: boolean
         description: 'upload to release'
@@ -80,10 +80,10 @@ jobs:
       - name: Start Build
         run: |
           make ${{ inputs.target }}
-          echo "TAG_ANME=$(date +%Y%m%d)" >> $GITHUB_ENV
+          echo "TAG_NAME=$(date +%Y%m%d)" >> $GITHUB_ENV
       - uses: actions/upload-artifact@v3
         with:
-          name: ${{ inputs.target }}-${{ env.TAG_ANME }}
+          name: ${{ inputs.target }}-${{ env.TAG_NAME }}
           path: trunk/images/*.trx
       - uses: ncipollo/release-action@v1
         if: github.event.inputs.release == 'true'
