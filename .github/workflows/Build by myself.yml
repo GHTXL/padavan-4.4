@@ -61,24 +61,25 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build:
-    name: build
-    runs-on: ubuntu-20.04
+    #name: build
+    name: ${{ inputs.target }}
+    runs-on: ubuntu-latest
     if: ${{ !(github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')) }}
     env:
       build_variant: ${{ matrix.build_variant }}
       targets: ${{ matrix.targets }}
       images_dir: /opt/images
-    strategy:
-      matrix:
-        include:
-          - build_variant: "mt7620"
-            targets: "PSG1208 PSG1218 NEWIFI-MINI MI-MINI MI-3 OYE-001 5K-W20"
-          - build_variant: "mt7628"
-            targets: "HC5861B MI-NANO MZ-R13 MZ-R13P 360P2 HC5761A HC5661A"
-          - build_variant: "mt7621"
-            targets: "K2P_nano K2P DIR-878 RM2100 CR660x"
-          - build_variant: "mt7621-usb"
-            targets: "XY-C1 JCG-836PRO JCG-AC860M JCG-Y2 DIR-882 A3004NS MSG1500 WR1200JS MI-R3G NEWIFI3 B70"
+    #strategy:
+      #matrix:
+        #include:
+          #- build_variant: "mt7620"
+          #  targets: "PSG1208 PSG1218 NEWIFI-MINI MI-MINI MI-3 OYE-001 5K-W20"
+         # - build_variant: "mt7628"
+           # targets: "HC5861B MI-NANO MZ-R13 MZ-R13P 360P2 HC5761A HC5661A"
+          #- build_variant: "mt7621"
+            #targets: "K2P_nano K2P DIR-878 RM2100 CR660x"
+          #- build_variant: "mt7621-usb"
+            #targets: "XY-C1 JCG-836PRO JCG-AC860M JCG-Y2 DIR-882 A3004NS MSG1500 WR1200JS MI-R3G NEWIFI3 B70"
     steps:
       - uses: actions/checkout@v3
       - name: Prepare environment
