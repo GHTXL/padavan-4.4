@@ -1,0 +1,56 @@
+name: build
+
+on: 
+#  push:
+#    branches:
+#    - "*"
+  workflow_dispatch:
+    inputs:
+      target:
+        type: choice
+        description: 'Please select the model to compile'
+        options:
+        - 'B50'
+        default: 'B50'
+      release:
+        type: boolean
+        description: 'upload to release'
+        default: 'true'
+jobs:
+  build:
+    name: ${{ inputs.target }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hendrikmuhs/ccache-action@v1.2.3
+      - uses: actions/setup-go@v4
+        with:
+          #go-version: '^1.19.2'
+          go-version: '1.25'
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-v1
+          restore-keys: |
+            ${{ runner.os }}-go-
+      - name: Prepare environment
+        run: |
+          sudo apt update
+          sudo apt install libtool-bin gperf python3-docutils autopoint gettext ccache
+      - name: Start Build
+        run: |
+          make ${{ inputs.target }}
+          echo "TAG_NAME=$(date +%Y%m%d)" >> $GITHUB_ENV
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ inputs.target }}-${{ env.TAG_NAME }}
+          path: trunk/images/*.trx
+      - uses: ncipollo/release-action@v1
+        if: github.event.inputs.release == 'true'
+        with:
+          commit: ${{ github.sha }}
+          tag: Padavan
+          artifacts: trunk/images/*.trx
+          allowUpdates: true
