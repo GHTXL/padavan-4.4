@@ -67,7 +67,7 @@ jobs:
     if: ${{ !(github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')) }}
     env:
     #  build_variant: ${{ matrix.build_variant }}
-    #  targets: ${{ matrix.targets }}
+      targets: ${{ inputs.targets }}
       images_dir: /opt/images
     #strategy:
       #matrix:
