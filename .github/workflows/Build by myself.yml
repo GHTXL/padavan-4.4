@@ -64,11 +64,11 @@ jobs:
     #name: build
     name: ${{ inputs.target }}
     runs-on: ubuntu-latest
-    #if: ${{ !(github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')) }}
-    #env:
+    if: ${{ !(github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')) }}
+    env:
     #  build_variant: ${{ matrix.build_variant }}
     #  targets: ${{ matrix.targets }}
-    #  images_dir: /opt/images
+      images_dir: /opt/images
     #strategy:
       #matrix:
         #include:
